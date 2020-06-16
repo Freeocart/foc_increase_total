@@ -1,6 +1,6 @@
 <?php
 
-$_['heading_title'] = 'FOC: Increase total';
+$_['heading_title'] = 'FOC: Increase order total';
 
 $_['text_edit'] = 'Configure';
 $_['text_extension'] = 'Extensions';
