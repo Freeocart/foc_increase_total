@@ -1,0 +1,38 @@
+{
+  "en-gb": {
+    "If selected currency": "If selected currency",
+    "If customer language is": "If customer language is",
+    "Not selected": "Not selected",
+    "Add": "Add",
+    "Delete rule": "Delete rule",
+    "Add new ruleset": "Add new ruleset",
+    "Totals label": "Totals label",
+    "Extra charge": "Extra charge",
+    "Use extra charge once": "Use extra charge once",
+    "Show extra charge label in cart totals": "Show extra charge label in cart totals",
+    "Rules": "Rules",
+    "Delete ruleset": "Delete ruleset",
+    "Add new rule": "Add new rule",
+    "Language": "Language",
+    "Currency": "Currency",
+    "Option": "Option"
+  },
+  "ru-ru": {
+    "If selected currency": "Если выбрана валюта",
+    "If customer language is": "Если язык клиента",
+    "Not selected": "Значение не выбрано",
+    "Add": "Добавить",
+    "Delete rule": "Удалить правило",
+    "Add new ruleset": "Добавить новый набор правил",
+    "Totals label": "Заголовок наценки",
+    "Extra charge": "Наценка",
+    "Use extra charge once": "Применять наценку единоразово",
+    "Show extra charge label in cart totals": "Отображать название наценки в корзине",
+    "Rules": "Правила",
+    "Delete ruleset": "Удалить набор правил",
+    "Add new rule": "Добавить новое правило",
+    "Language": "Язык",
+    "Currency": "Валюта",
+    "Option": "Опция"
+  }
+}
