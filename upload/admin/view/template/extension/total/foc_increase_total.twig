@@ -1,0 +1,89 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button id="save-form-foc-increase-total" type="submit" form="form-total" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-foc-increase-total" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="total_foc_increase_total_status" id="input-status" class="form-control">
+                {% if total_foc_increase_total_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="total_foc_increase_total_sort_order" value="{{ total_foc_increase_total_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+            </div>
+          </div>
+
+
+          <ul class="nav nav-tabs">
+            {% for language in languages %}
+            <li {% if (language['language_id'] == language_id) %} class="active" {% endif %}>
+              <a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+
+          <div class="tab-content">
+            {% for language in languages %}
+            <div class="tab-pane {% if (language['language_id'] == language_id) %}active{% endif %}" id="language{{ language['language_id'] }}">
+
+              <div
+                class='foc_increase_total_rules_app'
+                data-output-name='total_foc_increase_total_rules[{{ language['language_id'] }}]'
+                data-oc-info='{{ ocInfo[language['language_id']] | json_encode }}'
+                data-rules='{{ total_foc_increase_total_rules[language['language_id']] }}'
+                data-language='{{ language_code }}'
+              >
+                app...
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+{% for style in styles %}
+<link rel="{{ style.rel }}" href="{{ style.href }}" media="{{ style.media }}" />
+{% endfor %}
+
+{{ footer }}
