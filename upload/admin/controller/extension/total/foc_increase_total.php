@@ -88,13 +88,15 @@ class ControllerExtensionTotalFocIncreaseTotal extends Controller {
 		}
 
 		foreach ($data['languages'] as $language) {
-			$data['ocInfo'][$language['language_id']] = array(
+			$ocInfo = array(
 				'languages' => array_values($data['languages']),
 				'options' => $this->model_extension_total_foc_increase_total->getOptionsList($language['language_id']),
 				'optionsValues' => $this->model_extension_total_foc_increase_total->getOptionsValuesList($language['language_id']),
 				'currencies' => $currencies,
 				'currencySymbol' => $currency_symbol
 			);
+
+			$data['ocInfo'][$language['language_id']] = json_encode($ocInfo, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 		}
 
 		$data['header'] = $this->load->controller('common/header');
