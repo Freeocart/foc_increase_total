@@ -15,7 +15,9 @@
     "Add new rule": "Add new rule",
     "Language": "Language",
     "Currency": "Currency",
-    "Option": "Option"
+    "Option": "Option",
+    "Countries": "Countries",
+    "Country filter": "Country filter"
   },
   "ru-ru": {
     "If selected currency": "Если выбрана валюта",
@@ -33,6 +35,8 @@
     "Add new rule": "Добавить новое правило",
     "Language": "Язык",
     "Currency": "Валюта",
-    "Option": "Опция"
+    "Option": "Опция",
+    "Countries": "Страны доставки",
+    "Country filter": "Фильтр по стране"
   }
 }

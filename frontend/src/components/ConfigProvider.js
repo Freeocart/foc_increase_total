@@ -19,6 +19,7 @@ const DEFAULT_OC_INFO = {
   currencies: [],
   options: [],
   optionsValues: [],
+  countries: [],
   currencySymbol: ''
 }
 
@@ -116,6 +117,9 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
     },
     get currencySymbol () {
       return opencartInfo.currencySymbol
+    },
+    get countries () {
+      return opencartInfo.countries
     },
     rulesets: rulesConfig,
     getRuleset,

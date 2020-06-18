@@ -1,6 +1,7 @@
 import Language from './Language'
 import Option from './Option'
 import Currency from './Currency'
+import Countries from './Countries'
 
 export const RULE_TYPES = {
   language: {
@@ -14,6 +15,10 @@ export const RULE_TYPES = {
   currency: {
     name: 'Currency',
     component: Currency
+  },
+  countries: {
+    name: 'Countries',
+    component: Countries
   }
 }
 
