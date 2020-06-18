@@ -72,11 +72,15 @@ class ControllerExtensionTotalFocIncreaseTotal extends Controller {
 
 		$this->load->model('localisation/language');
 		$this->load->model('localisation/currency');
+		$this->load->model('localisation/country');
+
 		$data['languages'] = $this->model_localisation_language->getLanguages();
 		$data['language_id'] = $this->config->get('config_language_id');
 		$data['language_code'] = $this->config->get('config_language');
+
 		$data['ocInfo'] = array();
 
+		$countries = $this->model_localisation_country->getCountries();
 		$currencies_list = $this->model_localisation_currency->getCurrencies();
 		$currencies = array_values($currencies_list);
 
@@ -93,7 +97,8 @@ class ControllerExtensionTotalFocIncreaseTotal extends Controller {
 				'options' => $this->model_extension_total_foc_increase_total->getOptionsList($language['language_id']),
 				'optionsValues' => $this->model_extension_total_foc_increase_total->getOptionsValuesList($language['language_id']),
 				'currencies' => $currencies,
-				'currencySymbol' => $currency_symbol
+				'currencySymbol' => $currency_symbol,
+				'countries' => $countries
 			);
 
 			$data['ocInfo'][$language['language_id']] = json_encode($ocInfo, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);

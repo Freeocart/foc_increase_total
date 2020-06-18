@@ -51,6 +51,16 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 					return true;
 				}
 			break;
+			case 'countries':
+				if (!isset($rule['value']) || !is_array($rule['value'])) {
+					return false;
+				}
+
+				$country = $this->session->data['shipping_address']['country_id'];
+
+				if (in_array($country, $rule['value'])) {
+					return true;
+				}
 		}
 
 		return false;
