@@ -96,6 +96,8 @@ class ControllerExtensionTotalFocIncreaseTotal extends Controller {
 				'languages' => array_values($data['languages']),
 				'options' => $this->model_extension_total_foc_increase_total->getOptionsList($language['language_id']),
 				'optionsValues' => $this->model_extension_total_foc_increase_total->getOptionsValuesList($language['language_id']),
+				'attributeGroups' => $this->model_extension_total_foc_increase_total->getAttributeGroupList($language['language_id']),
+				'attributes' => $this->model_extension_total_foc_increase_total->getAttributesList($language['language_id']),
 				'currencies' => $currencies,
 				'currencySymbol' => $currency_symbol,
 				'countries' => $countries

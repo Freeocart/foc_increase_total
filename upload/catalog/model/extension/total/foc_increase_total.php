@@ -61,6 +61,34 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 				if (in_array($country, $rule['value'])) {
 					return true;
 				}
+			break;
+			case 'attribute':
+				if (!isset($rule['attribute_group_id']) || !isset($rule['attribute_id'])) {
+					return false;
+				}
+
+				$attributesGroups = $this->model_catalog_product->getProductAttributes($product['product_id']);
+
+				if (empty($attributesGroups)) {
+					return false;
+				}
+
+				foreach ($attributesGroups as $attributeGroup) {
+					if ($rule['attribute_group_id'] === $attributeGroup['attribute_group_id']) {
+						foreach ($attributeGroup['attribute'] as $attribute) {
+							if ($rule['attribute_id'] === $attribute['attribute_id']) {
+								if ($rule['check_value']) {
+									if ($rule['value'] === $attribute['text']) {
+										return true;
+									}
+									return false;
+								}
+								return true;
+							}
+						}
+					}
+				}
+			break;
 		}
 
 		return false;
@@ -104,6 +132,8 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 	}
 
   public function getTotal($total) {
+		$this->load->model('catalog/product');
+
 		$rules = $this->getRules();
 		$increaseTotal = 0;
 		$used = array();
