@@ -20,6 +20,8 @@ const DEFAULT_OC_INFO = {
   options: [],
   optionsValues: [],
   countries: [],
+  attributes: [],
+  attributeGroups: [],
   currencySymbol: ''
 }
 
@@ -120,6 +122,12 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
     },
     get countries () {
       return opencartInfo.countries
+    },
+    get attributes () {
+      return opencartInfo.attributes
+    },
+    get attributeGroups () {
+      return opencartInfo.attributeGroups
     },
     rulesets: rulesConfig,
     getRuleset,

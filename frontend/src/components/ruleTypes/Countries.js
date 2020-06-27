@@ -14,7 +14,6 @@ export default function Countries ({ rulesetId, rule: propRule }) {
   const { t } = useI18n()
 
   const toggleCountry = country_id => {
-    // console.log(country_id, selectedCountries, selectedCountries.includes(country_id))
     const countriesList = selectedCountries.includes(country_id)
       ? selectedCountries.filter(id => id !== country_id)
       : [ ...selectedCountries, country_id ]

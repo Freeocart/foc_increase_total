@@ -17,7 +17,11 @@
     "Currency": "Currency",
     "Option": "Option",
     "Countries": "Countries",
-    "Country filter": "Country filter"
+    "Country filter": "Country filter",
+    "Attribute": "Attribute",
+    "Attribute group": "Attribute group",
+    "Attribute value": "Attribute value",
+    "Check attribute value?": "Check attribute value?"
   },
   "ru-ru": {
     "If selected currency": "Если выбрана валюта",
@@ -37,6 +41,10 @@
     "Currency": "Валюта",
     "Option": "Опция",
     "Countries": "Страны доставки",
-    "Country filter": "Фильтр по стране"
+    "Country filter": "Фильтр по стране",
+    "Attribute": "Атрибут",
+    "Attribute group": "Группа атрибутов",
+    "Attribute value": "Значение атрибута",
+    "Check attribute value?": "Проверять значение атрибута?"
   }
 }
