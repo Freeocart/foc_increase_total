@@ -13,7 +13,8 @@ function RulePicker ({ rulesetId, rule }) {
 
   const { t } = useI18n()
 
-  const handleDeleteRuleClick = () => {
+  const handleDeleteRuleClick = e => {
+    e.preventDefault()
     deleteRule(rulesetId, rule)
   }
 

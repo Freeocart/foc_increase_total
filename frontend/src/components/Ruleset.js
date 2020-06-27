@@ -16,6 +16,7 @@ export default function Ruleset ({ id, ruleset }) {
   const { t } = useI18n()
 
   const handleDeleteRulesetClick = e => {
+    e.preventDefault()
     deleteRuleset(id)
   }
 
