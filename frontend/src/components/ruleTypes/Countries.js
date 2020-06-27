@@ -11,6 +11,8 @@ export default function Countries ({ rulesetId, rule: propRule }) {
   const { countries, updateRule } = useContext(ConfigContext)
   const [ selectedCountries, setSelectedCountries ] = useState(propRule.value || [])
 
+  const [ showCheckedOnly, setShowCheckedOnly ] = useState(false)
+
   const { t } = useI18n()
 
   const toggleCountry = country_id => {
@@ -24,15 +26,28 @@ export default function Countries ({ rulesetId, rule: propRule }) {
     })
   }
 
+  const handleChangeShowCheckedOnly = e => {
+    setShowCheckedOnly(e.target.checked)
+  }
+
+  const items = showCheckedOnly
+    ? filterCountries(filter, countries).filter(country => selectedCountries.includes(country.country_id))
+    : filterCountries(filter, countries)
+
   return <div className="Countries">
     <div className="row">
       <div className="col-sm-3">
         <input className="form-control" placeholder={ t('Country filter') } type="text" value={ filter } onChange={ e => setFilter(e.target.value) } />
+
+        <label className="checkbox">
+          { t('Show checked only') }
+          <input type="checkbox" checked={ showCheckedOnly } onChange={ handleChangeShowCheckedOnly } />
+        </label>
       </div>
 
       <div className="col-sm-9">
         <div className="Countries__list">
-        { filterCountries(filter, countries).map((country, index) => (
+        { items.map((country, index) => (
           <div key={ index } className="Countries__country">
             <input type="checkbox" checked={ selectedCountries.includes(country.country_id) } onChange={ e => toggleCountry(country.country_id) } /> { country.name }
           </div>

@@ -21,7 +21,8 @@
     "Attribute": "Attribute",
     "Attribute group": "Attribute group",
     "Attribute value": "Attribute value",
-    "Check attribute value?": "Check attribute value?"
+    "Check attribute value?": "Check attribute value?",
+    "Show checked only": "Show checked only"
   },
   "ru-ru": {
     "If selected currency": "Если выбрана валюта",
@@ -45,6 +46,7 @@
     "Attribute": "Атрибут",
     "Attribute group": "Группа атрибутов",
     "Attribute value": "Значение атрибута",
-    "Check attribute value?": "Проверять значение атрибута?"
+    "Check attribute value?": "Проверять значение атрибута?",
+    "Show checked only": "Отобразить только выбранные"
   }
 }
