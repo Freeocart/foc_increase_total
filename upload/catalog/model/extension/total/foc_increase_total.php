@@ -2,6 +2,8 @@
 
 class ModelExtensionTotalFocIncreaseTotal extends Model {
 
+	const OPTION_VALUE_IS_ANY = -1;
+
 	public function getRules () {
 		$rules = $this->config->get('total_foc_increase_total_rules');
 		$language_id = $this->config->get('config_language_id');
@@ -20,11 +22,15 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 					return false;
 				}
 
+				$ruleOptionId = (int)$rule['option_id'];
+				$ruleValue = is_null($rule['value']) ? null : (int)$rule['value'];
+				$skipValueCheck = $ruleValue === self::OPTION_VALUE_IS_ANY;
+
 				foreach ($product['option'] as $option) {
-					if ((int)$option['option_id'] === (int)$rule['option_id']
-							&& (int)$option['option_value_id'] === (int)$rule['value']
-					) {
-						return true;
+					if ((int)$option['option_id'] === $ruleOptionId) {
+						if ($skipValueCheck || (int)$option['option_value_id'] === $ruleValue) {
+							return true;
+						}
 					}
 				}
 			break;
