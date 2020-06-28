@@ -4,7 +4,15 @@ import { useI18n } from 'react-simple-i18n'
 
 import './Countries.css'
 
-const filterCountries = (filter, data = []) => data.filter(item => item.name.includes(filter))
+const filterCountries = (filter, data = []) => data.filter(item => {
+  if (!item || !item.name) {
+    return false
+  }
+
+  return item.name
+    .toLowerCase()
+    .includes(filter.toLowerCase())
+})
 
 export default function Countries ({ rulesetId, rule: propRule }) {
   const [ filter, setFilter ] = useState('')

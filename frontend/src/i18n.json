@@ -22,7 +22,14 @@
     "Attribute group": "Attribute group",
     "Attribute value": "Attribute value",
     "Check attribute value?": "Check attribute value?",
-    "Show checked only": "Show checked only"
+    "Show checked only": "Show checked only",
+    "Any option value": "Any option value",
+    "Export": "Export",
+    "Import": "Import",
+    "Rules JSON data to import": "Rules JSON data to import",
+    "Click \"Export\" button to export rules as JSON data": "Click \"Export\" button to export rules as JSON data",
+    "Import/export rules": "Import/export rules",
+    "Clear rulesets": "Clear rulesets"
   },
   "ru-ru": {
     "If selected currency": "Если выбрана валюта",
@@ -47,6 +54,13 @@
     "Attribute group": "Группа атрибутов",
     "Attribute value": "Значение атрибута",
     "Check attribute value?": "Проверять значение атрибута?",
-    "Show checked only": "Отобразить только выбранные"
+    "Show checked only": "Отобразить только выбранные",
+    "Any option value": "Любое значение опции",
+    "Export": "Экспорт",
+    "Import": "Импорт",
+    "Rules JSON data to import": "JSON правил для импорта",
+    "Click \"Export\" button to export rules as JSON data": "Нажмите кнопку \"Экспорт\" чтобы экспортировать правила в виде JSON",
+    "Import/export rules": "Импорт/экспорт правил",
+    "Clear rulesets": "Удалить наборы правил"
   }
 }

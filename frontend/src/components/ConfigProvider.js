@@ -130,6 +130,10 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
       return opencartInfo.attributeGroups
     },
     rulesets: rulesConfig,
+    setRulesets: setRulesConfig,
+    resetRulesets: (cb) => {
+      setRulesConfig({})
+    },
     getRuleset,
     updateRuleset,
     addNewRuleset,

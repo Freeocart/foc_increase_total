@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react'
 import { ConfigContext } from '../ConfigProvider'
 import { useI18n } from 'react-simple-i18n'
+import { intOrNull } from '../../lib'
 
 export default function Attribute ({ rulesetId, rule }) {
-  const [ attributeGroupId, setAttributeGroupId ] = useState(rule.attribute_group_id)
-  const [ attributeId, setAttributeId ] = useState(rule.attribute_id)
+  const [ attributeGroupId, setAttributeGroupId ] = useState(intOrNull(rule.attribute_group_id))
+  const [ attributeId, setAttributeId ] = useState(intOrNull(rule.attribute_id))
   const [ attributeValue, setAttributeValue ] = useState(rule.value)
   const [ checkAttributeValue, setCheckAttributeValue ] = useState(rule.check_value)
-
   const { attributeGroups, attributes, updateRule } = useContext(ConfigContext)
-
   const { t } = useI18n()
 
   const handleSelectAttributeGroup = e => {

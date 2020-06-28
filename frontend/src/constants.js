@@ -1,0 +1,1 @@
+export const OPTION_VALUE_IS_ANY = -1
