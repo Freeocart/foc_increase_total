@@ -9,3 +9,5 @@ $_['text_success'] = 'Settings successfuly saved';
 $_['entry_status'] = 'Status';
 $_['entry_sort_order'] = 'Sort order';
 $_['entry_config'] = 'Config';
+
+$_['entry_loading_frontend'] = 'Loading...';
