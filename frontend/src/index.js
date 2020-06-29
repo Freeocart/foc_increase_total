@@ -19,7 +19,7 @@ const parseJsonOr = (json, defaultValue = {}) => {
 }
 
 Array.from(mountPoints).forEach(rootEl => {
-  const rules = rootEl.hasAttribute('data-rules') && parseJsonOr(rootEl.getAttribute('data-rules'), {})
+  const state = rootEl.hasAttribute('data-state') && parseJsonOr(rootEl.getAttribute('data-state'), {})
   const ocInfo = rootEl.hasAttribute('data-oc-info') && parseJsonOr(rootEl.getAttribute('data-oc-info'), {})
   const outputName = rootEl.hasAttribute('data-output-name') ? rootEl.getAttribute('data-output-name') : null
   const userLanguage = rootEl.getAttribute('data-language-code') || 'en-gb'
@@ -29,7 +29,7 @@ Array.from(mountPoints).forEach(rootEl => {
   ReactDOM.render(
     <React.StrictMode>
       <I18nProvider i18n={ createI18n(i18nData, { lang }) }>
-        <App rules={ rules } ocInfo={ ocInfo } outputName={ outputName } />
+        <App state={ state } ocInfo={ ocInfo } outputName={ outputName } />
       </I18nProvider>
     </React.StrictMode>,
     rootEl
