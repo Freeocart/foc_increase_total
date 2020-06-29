@@ -29,7 +29,11 @@
     "Rules JSON data to import": "Rules JSON data to import",
     "Click \"Export\" button to export rules as JSON data": "Click \"Export\" button to export rules as JSON data",
     "Import/export rules": "Import/export rules",
-    "Clear rulesets": "Clear rulesets"
+    "Clear rulesets": "Clear rulesets",
+    "Total mode": "Total mode",
+    "Total mode: 0": "Set max increase value",
+    "Total mode: 1": "Set min increase value",
+    "Total mode: 2": "Sum increase values"
   },
   "ru-ru": {
     "If selected currency": "Если выбрана валюта",
@@ -61,6 +65,10 @@
     "Rules JSON data to import": "JSON правил для импорта",
     "Click \"Export\" button to export rules as JSON data": "Нажмите кнопку \"Экспорт\" чтобы экспортировать правила в виде JSON",
     "Import/export rules": "Импорт/экспорт правил",
-    "Clear rulesets": "Удалить наборы правил"
+    "Clear rulesets": "Удалить наборы правил",
+    "Total mode": "Режим расчёта",
+    "Total mode: 0": "Установить максимальную наценку",
+    "Total mode: 1": "Установить минимальную наценку",
+    "Total mode: 2": "Суммировать все наценки"
   }
 }
