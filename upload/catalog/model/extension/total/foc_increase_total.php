@@ -4,17 +4,75 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 
 	const OPTION_VALUE_IS_ANY = -1;
 
-	public function getRules () {
-		$rules = $this->config->get('total_foc_increase_total_rules');
-		$language_id = $this->config->get('config_language_id');
+	/*
+		How total will be calculated
+	*/
+	const RULES_TOTAL_SET_MAX_INCREASE_VALUE = 0;
+	const RULES_TOTAL_SET_MIN_INCREASE_VALUE = 1;
+	const RULES_TOTAL_SUM_INCREASE_VALUES = 2;
 
-		if (isset($rules[$language_id])) {
-			return json_decode($rules[$language_id], true);
-		}
-
-		return array();
+	/*
+		Init vars
+	*/
+	public function __construct ($registry) {
+		parent::__construct($registry);
+		$this->_config = $this->__initConfig();
+		$this->_validTotalModes = [
+			self::RULES_TOTAL_SET_MAX_INCREASE_VALUE,
+			self::RULES_TOTAL_SET_MIN_INCREASE_VALUE,
+			self::RULES_TOTAL_SUM_INCREASE_VALUES
+		];
+		$this->_defaultTotalMode = self::RULES_TOTAL_SET_MAX_INCREASE_VALUE;
 	}
 
+	/*
+		Load config object
+	*/
+	public function __initConfig () {
+		$raw = $this->config->get('total_foc_increase_total_rules');
+		$language_id = $this->config->get('config_language_id');
+
+		if (isset($raw[$language_id])) {
+			return json_decode($raw[$language_id], true);
+		}
+
+		return [];
+	}
+
+	/*
+		Get rules object
+		{
+			objID: {
+				rule
+			}
+		}
+	*/
+	public function getRulesets () {
+		if (isset($this->_config['rulesets']) && is_array($this->_config['rulesets'])) {
+			return $this->_config['rulesets'];
+		}
+
+		return [];
+	}
+
+	/*
+		Get totalMode int
+	*/
+	public function getTotalCalculationMode () {
+		if (isset($this->_config['totalMode'])) {
+			$totalMode = $this->_config['totalMode'];
+
+			if (in_array($totalMode, $this->_validTotalModes)) {
+				return (int)$totalMode;
+			}
+		}
+
+		return $this->_defaultTotalMode;
+	}
+
+	/*
+		Check if rule valid for product
+	*/
 	public function checkRuleForProduct ($product, $rule) {
 		switch ($rule['type']) {
 			case 'option':
@@ -100,73 +158,116 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 		return false;
 	}
 
-	public function checkRulesForProduct ($product, $rules = array(), $used = array()) {
-		$result = array();
+	/*
+		Check all existing rules for product
+	*/
+	public function checkValidRulesetsToApplyForProduct ($product, $rulesets = array(), $used = array()) {
+		$rulesetsToApply = [];
 
-		if ($rules === null) {
-			return $result;
+		if ($rulesets === null) {
+			return $rulesetsToApply;
 		}
 
-		foreach ($rules as $id => $config) {
+		foreach ($rulesets as $id => $config) {
 			$use = false;
 
 			foreach ($config['rules'] as $rule) {
 				if (!$this->checkRuleForProduct($product, $rule)) {
-					$use = false;
 					break;
 				}
 				else {
-					$use = true;
-				}
-			}
-
-			// применяем наценку
-			if ($use) {
-				if (!$config['once'] || !in_array($id, $used)) {
-					$result = array(
+					$rulesetsToApply[] = [
 						'id' => $id,
 						'increase' => $config['increase'],
 						'useLabel' => $config['useLabel'],
-						'label' => $config['label']
-					);
+						'label' => $config['label'],
+						'once' => $config['once']
+					];
 				}
-				break;
 			}
 		}
 
-		return $result;
+		return $rulesetsToApply;
 	}
 
+	public function reduceRulesetsToApply ($rulesets, $mode) {
+		switch ($mode) {
+			case self::RULES_TOTAL_SET_MAX_INCREASE_VALUE:
+				return array_reduce($rulesets, [ $this, '__maxByIncreaseValue' ], []);
+			case self::RULES_TOTAL_SET_MIN_INCREASE_VALUE:
+				return array_reduce($rulesets, [ $this, '__minByIncreaseValue' ], []);
+			default:
+				return [];
+		}
+	}
+
+	protected function __maxByIncreaseValue ($prev, $current) {
+		return (empty($prev) || $prev['increase'] < $current['increase']) ? $current : $prev;
+	}
+
+	protected function __minByIncreaseValue ($prev, $current) {
+		return (empty($prev) || $prev['increase'] > $current['increase']) ? $current : $prev;
+	}
+
+	public function rulesetToTotals ($ruleset, $quantity = 1) {
+		$total = array(
+			'code'       => 'foc_increase_total',
+			'title'      => $ruleset['label'],
+			'value'      => $this->calculateRulesetIncreaseTotal($ruleset, $quantity),
+			'sort_order' => 10,
+		);
+
+		return $total;
+	}
+
+	public function calculateRulesetIncreaseTotal ($ruleset, $quantity = 1) {
+		if ($ruleset['once']) {
+			return $ruleset['increase'];
+		}
+		else {
+			return $ruleset['increase'] * $quantity;
+		}
+	}
+
+	/*
+		Opencart getTotal API
+	*/
   public function getTotal($total) {
 		$this->load->model('catalog/product');
 
-		$rules = $this->getRules();
+		$rulesets = $this->getRulesets();
+
 		$increaseTotal = 0;
-		$used = array();
-
-		$labels = array();
-
+		$labels = [];
 		foreach ($this->cart->getProducts() as $product) {
-			$result = $this->checkRulesForProduct($product, $rules, $used);
+			$rulesetsToApply = $this->checkValidRulesetsToApplyForProduct($product, $rulesets);
 
-			if (!empty($result)) {
-				$increaseTotal += $result['increase'];
+			if (!empty($rulesetsToApply)) {
+				$calculationMode = $this->getTotalCalculationMode();
+				$reduced = [];
 
-				if ($result['useLabel']) {
-					if (!isset($labels[$result['id']])) {
-						$labels[$result['id']] = array(
-							'code'       => 'foc_increase_total',
-							'title'      => $result['label'],
-							'value'      => $result['increase'],
-							'sort_order' => 10,
-						);
-					}
-					else {
-						$labels[$result['id']]['value'] += $result['increase'];
-					}
+				if ($calculationMode === self::RULES_TOTAL_SUM_INCREASE_VALUES) {
+					$reduced = $rulesetsToApply;
+				}
+				else {
+					$reduced = [ $this->reduceRulesetsToApply($rulesetsToApply, $calculationMode) ];
 				}
 
-				$used[] = $result['id'];
+				if (!empty($reduced)) {
+					foreach ($reduced as $ruleset) {
+						$rulesetIncrease = $this->calculateRulesetIncreaseTotal($ruleset, $product['quantity']);
+						$increaseTotal += $rulesetIncrease;
+
+						if ($ruleset['useLabel']) {
+							if (!isset($labels[$ruleset['id']])) {
+								$labels[$ruleset['id']] = $this->rulesetToTotals($ruleset, $product['quantity']);
+							}
+							else {
+								$labels[$ruleset['id']]['value'] += $rulesetIncrease;
+							}
+						}
+					}
+				}
 			}
 		}
 
