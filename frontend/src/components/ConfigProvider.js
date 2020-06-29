@@ -1,10 +1,24 @@
-/*
-  TODO: refactor file and move it outside of cart directory because its not really component
-*/
-
 import React, { useState } from 'react'
+import { mergeLeft } from '../lib'
+
+import {
+  RULES_TOTAL_SET_MAX_INCREASE_VALUE,
+  RULES_TOTAL_SET_MIN_INCREASE_VALUE,
+  RULES_TOTAL_SUM_INCREASE_VALUES
+} from '../constants'
+
+const VALID_TOTAL_MODES = [
+  RULES_TOTAL_SET_MAX_INCREASE_VALUE,
+  RULES_TOTAL_SET_MIN_INCREASE_VALUE,
+  RULES_TOTAL_SUM_INCREASE_VALUES
+]
 
 const ConfigContext = React.createContext({})
+
+const DEFAULT_STATE = {
+  totalMode: RULES_TOTAL_SET_MAX_INCREASE_VALUE,
+  rulesets: {}
+}
 
 const DEFAULT_RULESET = {
   label: 'ruleset',
@@ -25,12 +39,19 @@ const DEFAULT_OC_INFO = {
   currencySymbol: ''
 }
 
-function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
-  const [ rulesConfig, setRulesConfig ] = useState(defaultRulesConfig)
+function ConfigProvider ({ ocInfo, state: defaultState = {}, children }) {
+  const [ state, setState ] = useState(mergeLeft(DEFAULT_STATE, defaultState))
 
-  const opencartInfo = Object.assign(DEFAULT_OC_INFO, ocInfo)
+  const opencartInfo = mergeLeft(DEFAULT_OC_INFO, ocInfo)
 
-  const getRuleset = id => rulesConfig[id]
+  const getRuleset = id => state.rulesets[id]
+
+  const setRulesets = rulesets => {
+    setState({
+      ...state,
+      rulesets
+    })
+  }
 
   const updateRuleset = (id, rulesetData = {}) => {
     const ruleset = getRuleset(id) || {}
@@ -39,8 +60,8 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
       ...(rulesetData.rules || [])
     ]
 
-    setRulesConfig({
-      ...rulesConfig,
+    setRulesets({
+      ...state.rulesets,
       [id]: {
         ...ruleset,
         ...rulesetData,
@@ -66,15 +87,18 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
   }
 
   const deleteRuleset = id => {
-    const { [id]: _, ...rulesets } = rulesConfig
-    setRulesConfig(rulesets)
+    const { rulesets: { [id]: _, ...rulesets }, ...rest } = state
+    setState({
+      ...rest,
+      rulesets
+    })
   }
 
   const deleteRule = (rulesetId, ruleToDelete) => {
     const ruleset = getRuleset(rulesetId)
 
-    setRulesConfig({
-      ...rulesConfig,
+    setRulesets({
+      ...state.rulesets,
       [rulesetId]: {
         ...ruleset,
         rules: ruleset.rules.filter(rule => rule !== ruleToDelete)
@@ -95,8 +119,8 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
       return r
     })
 
-    setRulesConfig({
-      ...rulesConfig,
+    setRulesets({
+      ...state.rulesets,
       [rulesetId]: {
         ...ruleset,
         rules
@@ -104,7 +128,19 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
     })
   }
 
+  const setTotalMode = (totalMode) => {
+    if (VALID_TOTAL_MODES.includes(parseInt(totalMode))) {
+      setState({
+        ...state,
+        totalMode
+      })
+    }
+  }
+
   const value = {
+    get state () {
+      return state
+    },
     get options () {
       return opencartInfo.options
     },
@@ -129,18 +165,27 @@ function ConfigProvider ({ ocInfo, rules:defaultRulesConfig = {}, children }) {
     get attributeGroups () {
       return opencartInfo.attributeGroups
     },
-    rulesets: rulesConfig,
-    setRulesets: setRulesConfig,
-    resetRulesets: (cb) => {
-      setRulesConfig({})
+    get rulesets () {
+      return state.rulesets
     },
+    resetRulesets() {
+      setRulesets({})
+    },
+    get totalMode () {
+      return state.totalMode
+    },
+    setRulesets,
+    setTotalMode,
     getRuleset,
     updateRuleset,
     addNewRuleset,
     deleteRuleset,
     addNewRule,
     deleteRule,
-    updateRule
+    updateRule,
+    resetState (newState) {
+      setState(mergeLeft(state, newState))
+    }
   }
 
   return <ConfigContext.Provider value={ value }>{ children }</ConfigContext.Provider>

@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { ConfigContext } from './ConfigProvider'
+import { useI18n } from 'react-simple-i18n'
+
+import RuleCreator from './RuleCreator'
 import RulePicker from './RulePicker'
 
 import './Ruleset.css'
-import RuleCreator from './RuleCreator'
-import { useI18n } from 'react-simple-i18n'
 
 export default function Ruleset ({ id, ruleset }) {
   const {
@@ -69,8 +70,8 @@ export default function Ruleset ({ id, ruleset }) {
     <h3>{ t('Rules') }</h3>
     <div className="Ruleset__rules_container">
       <div className="Ruleset__rules">
-        { ruleset.rules.map((rule, index) => (
-          <RulePicker rulesetId={ id } rule={ rule } key={ index } />
+        { ruleset.rules.map((rule) => (
+          <RulePicker rulesetId={ id } rule={ rule } key={ id } />
         ))}
       </div>
       <RuleCreator rulesetId={ id } />
