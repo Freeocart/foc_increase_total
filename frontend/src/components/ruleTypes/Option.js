@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useMemo } from 'react'
 import { ConfigContext } from '../ConfigProvider'
 import { useI18n } from 'react-simple-i18n'
 import { intOrNull } from '../../lib'
@@ -11,6 +11,10 @@ export default function Option ({ rulesetId, rule }) {
   const { options, optionsValues, updateRule } = useContext(ConfigContext)
   const { t } = useI18n()
 
+  const filteredOptionValues = useMemo(() => {
+    return optionsValues.filter(optionValue => parseInt(optionValue.option_id) === parseInt(selectedOptionId))
+  }, [ selectedOptionId, optionsValues ])
+
   const handleSelectOptionId = e => {
     setSelectedOptionId(e.target.value)
     updateRule(rulesetId, rule, { option_id: e.target.value, value: null })
@@ -21,7 +25,6 @@ export default function Option ({ rulesetId, rule }) {
     updateRule(rulesetId, rule, { value: e.target.value })
   }
 
-  const filteredOptionValues = optionsValues.filter(optionValue => optionValue.option_id === selectedOptionId)
 
   return <div className="form-horizontal">
     <div className="col-sm-6">
