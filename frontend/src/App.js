@@ -1,16 +1,19 @@
 import React from 'react'
 import { ConfigProvider } from './components/ConfigProvider'
+
 import Rules from './components/Rules'
+import ExportImport from './components/ExportImport'
+import Output from './components/Output'
 
 import './App.css'
-import ExportImport from './components/ExportImport'
 
-function App({ rules, ocInfo, outputName }) {
+function App({ state, ocInfo, outputName }) {
   return (
-    <ConfigProvider rules={ rules } ocInfo={ ocInfo }>
+    <ConfigProvider state={ state } ocInfo={ ocInfo }>
       <div className="App">
-        <Rules outputName={ outputName } />
+        <Rules />
         <ExportImport />
+        <Output outputName={ outputName } />
       </div>
     </ConfigProvider>
   );
