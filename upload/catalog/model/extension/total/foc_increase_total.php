@@ -173,17 +173,22 @@ class ModelExtensionTotalFocIncreaseTotal extends Model {
 
 			foreach ($config['rules'] as $rule) {
 				if (!$this->checkRuleForProduct($product, $rule)) {
+					$use = false;
 					break;
 				}
 				else {
-					$rulesetsToApply[] = [
-						'id' => $id,
-						'increase' => $config['increase'],
-						'useLabel' => $config['useLabel'],
-						'label' => $config['label'],
-						'once' => $config['once']
-					];
+					$use = true;
 				}
+			}
+
+			if ($use) {
+				$rulesetsToApply[] = [
+					'id' => $id,
+					'increase' => $config['increase'],
+					'useLabel' => $config['useLabel'],
+					'label' => $config['label'],
+					'once' => $config['once']
+				];
 			}
 		}
 
